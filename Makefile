@@ -7,7 +7,7 @@ MODULE_NAME = hello_world
 obj-m := $(MODULE_NAME).o
 
 all:
-	make -C $(KERNEL_DIR) M=$(PWD) modules
+	make -C $(KERNEL_DIR) M=$(PWD) modules 
 clean:
 	make -C $(KERNEL_DIR) M=$(PWD) clean
 
