@@ -14,6 +14,7 @@ MODULE_DESCRIPTION("hello_world");
 MODULE_LICENSE("GPL");
 
 struct file *filp = NULL;
+struct file *filp2 = NULL;
 
 
 
@@ -26,47 +27,33 @@ static int hello_init(void) {
   
   struct kstat *stat;
   mm_segment_t oldfs;
-
-  char buf[128];
+  char buf[128] = {0};
+  loff_t pos, pos2 = 0;
   int i;
-  loff_t pos;
 
-  for (i = 0; i < 128; i++)
-    buf[i] = 0;
-  
-
-  filp = filp_open("/home/che0520/es_hw/file/input.txt", O_RDONLY, 0); 
+  filp = filp_open("/home/che0520/es_hw/file/input.txt", O_RDONLY, 0);
+  filp2 = filp_open("/home/che0520/es_hw/file/output.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
    if (IS_ERR(filp))
      printk("fail\n");
    else {
-     printk(KERN_INFO "%p\n", filp);
      oldfs = get_fs();
      set_fs(KERNEL_DS);
      pos = 0;
-
      stat = (struct kstat *) kmalloc(sizeof(struct kstat), GFP_KERNEL);
      vfs_stat("/home/che0520/es_hw/file/input.txt", stat);
-    
-     printk(KERN_ALERT "%lld", stat->size);
-
-
      pos = (int)stat->size -1;
-
      for(i = pos; i >= 0; i--) {
        pos = i;
        vfs_read(filp, buf, 1, &pos);
-       printk("read: %s", buf);
+       vfs_write(filp2, buf, 1, &pos2);
      }
-         
-
-     
-     
-    filp_close(filp, NULL);
+     filp_close(filp, NULL);
+     filp_close(filp2, NULL);
      set_fs(oldfs);
    }
-   printk(KERN_INFO "hello world\n");
-   
 
+   
+   printk(KERN_INFO "file converted!\n");
     
   return 0;
 }
