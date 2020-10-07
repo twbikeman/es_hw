@@ -4,7 +4,7 @@
 #include <linux/fs.h>
 #include <linux/unistd.h>
 #include <asm/segment.h>
-#include <linux/uaccess.h>
+#include <asm/uaccess.h>
 #include <asm/processor.h>
 #include <linux/buffer_head.h>
 #include <linux/slab.h>
@@ -18,26 +18,6 @@ struct file *filp = NULL;
 
 
 
-/* struct file *file_open(const char *path, int flags, int rights) { */
-/*   struct file *filp = NULL; */
-/*   mm_segment_t oldfs; */
-/*   int err = 0; */
-/*   oldfs = get_fs(); */
-/*   set_fs(KERNEL_DS); */
-/*   filp = filp_open(path, flags, rights); */
-/*   set_fs(oldfs); */
-/*   if (IS_ERR(filp)) { */
-/*     err = PTR_ERR(filp); */
-/*     return NULL; */
-/*   } */
-/*   return filp;  */
-/* } */
-
-
-/* int readFile(struct file *fp, char *buf, int readlen) { */
-/*     return fp->f_op->read(fp, buf, readlen, &fp->f_pos); */
-
-/* } */
 
 
 
